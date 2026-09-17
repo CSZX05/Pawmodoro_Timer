@@ -19,7 +19,7 @@ function App() {
 
   //Countdown timer logic
   useEffect(() => {
-    let timer : NodeJS.Timer;
+    let timer : ReturnType<typeof setInterval>;
     if(isRunning && timeLeft > 0) {
       timer = setInterval(() => {
         setTimeLeft(prevTime => prevTime - 1);
@@ -45,7 +45,7 @@ function App() {
   // Time format to show hours, minutes and seconds
   const formatTime = (seconds: number): string => {
     const h = Math.floor(seconds/3600).toString().padStart(2,'0');
-    const m = Math.floor(seconds/60).toString().padStart(2,'0');
+    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2,'0');
     const s = (seconds % 60).toString().padStart(2,'0');
 
     if(h !== "00"){
@@ -95,16 +95,21 @@ function App() {
     setTimeLeft(isBreak ? 5 * 60 : 25 * 60);
   }
 
-  //add or remove time button logic
   const manageTime = (add: boolean) => {
+    const MAX_TIME = 60 * 60;
+    const MIN_TIME = 5 * 60; 
+    const STEP = 5 * 60;
+  
     setTimeLeft(prevTime => {
-      if (!add && prevTime <= 5 * 60) {
+      if (add && prevTime >= MAX_TIME) {
         return prevTime;
       }
-  
-      return add ? prevTime + 5 * 60 : prevTime - 5 * 60;
+      if (!add && prevTime <= MIN_TIME) {
+        return prevTime;
+      }
+      return add ? Math.min(MAX_TIME, prevTime + STEP) : prevTime - STEP;
     });
-  }
+  };
 
   const [mode, setMode] = useState<'study' | 'rest'>('study');
 
@@ -117,13 +122,13 @@ function App() {
       <div className = "home-controls">
       <button 
       className={`image-button ${mode === 'study' ? 'active' : ''}`}
-      onClick={() => setMode('study')}>
+      onClick={() => switchMode(false)}>
       Study
     </button>
     
     <button 
       className={`image-button ${mode === 'rest' ? 'active' : ''}`}
-      onClick={() => setMode('rest')}>
+      onClick={() => switchMode(true)}>
       Rest
     </button>
         </div>
