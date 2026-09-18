@@ -129,13 +129,13 @@ function App() {
     <div className = "home-content">
       <div className = "home-controls">
       <button 
-      className={`image-button ${mode === 'study' ? 'active' : ''}`}
+      className={`image-button ${!isBreak ? 'active' : ''}`}
       onClick={() => switchMode(false)}>
       Study
     </button>
     
     <button 
-      className={`image-button ${mode === 'rest' ? 'active' : ''}`}
+      className={`image-button ${isBreak ? 'active' : ''}`}
       onClick={() => switchMode(true)}>
       Rest
     </button>
