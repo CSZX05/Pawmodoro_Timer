@@ -34,7 +34,7 @@ This is the start of a series of self initiated projects. This is the second pro
 
 ## Getting Started 
 
-### Prerequisites
+## Prerequisites
 Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 
 ```bash 
@@ -55,3 +55,7 @@ npm run build
 
 # Package into a desktop executable 
 npx electron-builder
+```
+
+## Reference Video 
+* [How to Make a Desktop Pomodoro App with React & Electron | Step-by-Step](https://youtu.be/K9eHZugy6lc?si=LILCmnq4ysjV_97j)

@@ -1,6 +1,5 @@
 import hellevator from './assets/sounds/hellevator.mp3';
 import chkchkboom from './assets/sounds/chckchckboom.mp3';
-import hallucination from './assets/sounds/hallucination.mp3';
 import divine from './assets/sounds/divine.mp3';
 import bleep from './assets/sounds/bleep.mp3';
 
@@ -8,7 +7,6 @@ import bleep from './assets/sounds/bleep.mp3';
 export const ringtones: string[] = [
   hellevator,
   chkchkboom,
-  hallucination,
   divine,
   bleep
 ];

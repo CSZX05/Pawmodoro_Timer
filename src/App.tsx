@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { studyEncouragements, restEncouragements } from './messages';
 import { playRandomRingtone } from './sounds';
@@ -17,28 +16,37 @@ function App() {
   const[totalRestTime, setTotalRestTime] = React.useState(0);
 
 
-  //Countdown timer logic
   useEffect(() => {
-    let timer : ReturnType<typeof setInterval>;
-    if(isRunning && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
-
-        // This part of the code is to see the total time taken for studying or resting, which is then used to calculate the total time spent in that perticular study session 
-        if(isBreak){
-          setTotalRestTime(prevTime => prevTime + 1);
-        }else{
-          setTotalStudyTime(prevTime => prevTime + 1);
-        }
-      },1000);
-    }
+    if (!isRunning) return;
+  
+    const startTime = Date.now();
+    const initialTimeLeft = timeLeft;
+  
+    const timer = setInterval(() => {
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      const updatedTimeLeft = Math.max(initialTimeLeft - elapsedSeconds, 0);
+  
+      setTimeLeft(updatedTimeLeft);
+  
+      if (isBreak) {
+        setTotalRestTime(prev => prev + 1);
+      } else {
+        setTotalStudyTime(prev => prev + 1);
+      }
+  
+      if (updatedTimeLeft === 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  
     return () => clearInterval(timer);
-  },[isRunning, timeLeft, isBreak]);
+  }, [isRunning, isBreak]);
 
   //When the timer reaches 0, it will play a song
   useEffect(() => {
     if (timeLeft === 0) {
       playRandomRingtone();
+      setIsRunning(false);
     }
   }, [timeLeft]);
   
